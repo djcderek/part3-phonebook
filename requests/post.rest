@@ -5,3 +5,5 @@ Content-Type: application/json
     "name": "arto Hellas",
     "number": 8586499444
 }
+###
+DELETE http://localhost:3001/api/persons/1
