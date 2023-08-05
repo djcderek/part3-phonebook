@@ -5,6 +5,19 @@ const cors = require('cors')
 const app = express()
 const Person = require('./models/person')
 
+const errorHandler = (error, request, response, next) => {
+  console.log(error)
+  if (error.name === 'CastError') {
+    return response.status(400).send({error: 'malformed id'})
+  }
+
+  next(error)
+}
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint'})
+}
+
 app.use(express.json())
 app.use(cors())
 app.use(express.static('build'))
@@ -40,12 +53,11 @@ app.get('/info', (request, response) => {
 app.delete('/api/persons/:id', (request, response) => {
   Person.findOneAndDelete({_id: request.params.id}).then(result => {
     response.status(204).end()
+    console.log(typeof request.params.id)
   })
 })
 
 app.post('/api/persons', (request, response) => {
-  // const id = Math.floor(Math.random()* 10000)
-  // const body = request.body
   const body = request.body
 
   if (!body.name || !body.number) {
@@ -60,6 +72,18 @@ app.post('/api/persons', (request, response) => {
     response.json(savedPerson)
   })
 })
+
+app.put('/api/persons/:id', (request, response) => {
+  const body = request.body
+  Person.findOneAndUpdate({name: body.name}, {number: body.number}, {new: true})
+    .then(result => {
+      console.log(result)
+      response.json(result)
+    })
+})
+
+app.use(unknownEndpoint)
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {

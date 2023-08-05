@@ -7,7 +7,7 @@ GET http://localhost:3001/api/persons/64c8855dab309880248d340d
 GET http://localhost:3001/info
 
 ###
-DELETE http://localhost:3001/api/persons/64c8855dab309880248d340d
+DELETE http://localhost:3001/api/persons/64cdf84f7e705873896ec16a
 
 ###
 POST http://localhost:3001/api/persons
@@ -15,5 +15,5 @@ Content-Type: application/json
 
 {
     "name": "test",
-    "number": "32423424234234"
+    "number": "32432456"
 }
