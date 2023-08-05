@@ -41,13 +41,23 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-  const numPeople = persons.length
-  const date = Date()
-  console.log('Phonebook has', numPeople)
-  console.log(date)
-  response.send(`
-  <p>Phonebook has info for ${numPeople} people</p>
-  <p>${date}</p>`)
+  Person.countDocuments({})
+    .then( count => {
+      const date = Date()
+      console.log('Phonebook has', count)
+      console.log(date)
+      response.send(`
+      <p>Phonebook has info for ${count} people</p>
+      <p>${date}</p>
+      `)
+    })
+  // const numPeople = persons.length
+  // const date = Date()
+  // console.log('Phonebook has', numPeople)
+  // console.log(date)
+  // response.send(`
+  // <p>Phonebook has info for ${numPeople} people</p>
+  // <p>${date}</p>`)
 })
 
 app.delete('/api/persons/:id', (request, response) => {
